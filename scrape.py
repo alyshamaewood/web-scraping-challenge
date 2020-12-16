@@ -14,7 +14,7 @@ def super_scrape():
     mars_data = {
         "title" : title,
         "paragraph" : paragraph,
-        "image" : "",
+        "image" : jpl_image(browser),
         "facts_table" : "",
         "hemispheres" : "",
         "last_modified" : dt.datetime.now()
@@ -44,3 +44,35 @@ def nasa_news(browser):
         return None, None
 
     return title, paragraph
+
+def jpl_image(browser):
+    jpl_url = "https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars"
+    browser.visit(jpl_url)
+
+    image_button = browser.find_by_id("full_image")
+    image_button.click()
+
+    info_button = browser.links.find_by_partial_text("more info")
+    info_button.click()
+
+    html = browser.html
+    soup = BeautifulSoup(html, 'html.parser')
+
+    try:
+        image = soup.find("img", class_="main_image").get("src")
+        image_url = f'https://www.jpl.nasa.gov{image}'
+
+    except AttributeError:
+        return None
+
+    return image_url
+
+def facts_table():
+    fact_url = 'https://space-facts.com/mars/'
+
+    tables = pd.read_html(fact_url)[0]
+    tables.columns=['mars attribute', 'value']
+    tables.set_index('mars attribute', inplace=True)
+    tables.to_html()
+
+    return tables.to_html()
