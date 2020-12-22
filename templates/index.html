@@ -29,16 +29,17 @@
           
           <div class="col-md-6">
             <h5 style="font-weight: bold">Mars Facts</h5>
-            <p class="card-text"id="dark-font" >{{ mars.facts_table | safe }}</p>
+            <p class="card-text"id="dark-font" width="575" height="600">{{ mars.facts_table | safe }}</p>
           </div>
         </div>
 
         <h2 style="font-weight: bold">Mars Hemispheres</h2>
         {% for item in mars.hemispheres %}
-          <div class="col-lg-4">
-              <div class="card" style="width: 20rem;">
+          <div class="col-lg-6">
+              <div class="card">
                   <div class="card-body">
-                    <img src="{{ item.href }}" width="575" height="600">
+                    <img src="{{ item.href }}" width="575" height="600" padding=500px>
+                    <h3>{{ item.title }}</h3>
                   </div>
                 </div>
             </div>
